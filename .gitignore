@@ -1,0 +1,20 @@
+# secrets and local settings
+.env
+
+# Python
+.venv/
+venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Node
+node_modules/
+dist/
+
+# generated data and misc
+data/clean/
+.vscode/
+*.log
+*.zip
+.DS_Store

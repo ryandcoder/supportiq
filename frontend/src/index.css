@@ -1,0 +1,82 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --paper: 246 241 231;
+  --card: 252 250 245;
+  --ink: 31 42 46;
+  --muted: 107 111 108;
+  --line: 227 218 201;
+  --teal: 15 95 99;
+  --teal-soft: 217 232 229;
+  --good: 47 125 91;
+  --warn: 183 121 31;
+  --bad: 166 61 47;
+}
+.dark {
+  --paper: 20 24 26;
+  --card: 27 33 36;
+  --ink: 236 230 216;
+  --muted: 154 162 159;
+  --line: 43 51 55;
+  --teal: 79 179 174;
+  --teal-soft: 31 58 59;
+  --good: 95 185 141;
+  --warn: 224 166 74;
+  --bad: 224 122 104;
+}
+/* the report page is always light, even when the app is in dark mode */
+.force-light {
+  --paper: 246 241 231;
+  --card: 252 250 245;
+  --ink: 31 42 46;
+  --muted: 107 111 108;
+  --line: 227 218 201;
+  --teal: 15 95 99;
+  --teal-soft: 217 232 229;
+  --good: 47 125 91;
+  --warn: 183 121 31;
+  --bad: 166 61 47;
+}
+
+html { color-scheme: light; }
+html.dark { color-scheme: dark; }
+body { @apply bg-paper text-ink font-sans antialiased; }
+h1, h2, h3 { @apply font-serif; }
+
+@layer components {
+  .card { @apply rounded-xl border border-line bg-card; }
+  .th { @apply px-3 py-2 text-left text-xs font-medium uppercase tracking-wide text-muted whitespace-nowrap; }
+  .td { @apply px-3 py-2 text-sm whitespace-nowrap; }
+
+  /* buttons: secondary (outlined), primary (filled), ghost (text) */
+  .btn { @apply inline-flex items-center justify-center gap-2 rounded-lg border border-line bg-card px-3.5 py-2 text-sm font-medium text-ink shadow-sm transition hover:border-teal hover:text-teal disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:border-line disabled:hover:text-ink; }
+  .btn-primary { @apply inline-flex items-center justify-center gap-2 rounded-lg border border-teal bg-teal px-3.5 py-2 text-sm font-semibold text-paper shadow-sm transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-40; }
+  .btn-ghost { @apply inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-sm font-medium text-muted transition hover:bg-teal-soft hover:text-teal disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-transparent disabled:hover:text-muted; }
+
+  .chip { @apply inline-flex items-center gap-1 rounded-full bg-teal-soft px-2.5 py-1 text-xs font-medium text-teal; }
+  .pill { @apply inline-flex items-center gap-2 rounded-full border border-line bg-paper px-3.5 py-1.5 text-sm transition hover:border-teal; }
+  .input { @apply rounded-lg border border-line bg-paper px-3 py-1.5 text-sm text-ink outline-none focus:border-teal; }
+}
+
+/* ---------- print / save as PDF (used by the Report page) ---------- */
+.print-footer { display: none; }
+
+@page { size: A4; margin: 14mm; }
+
+@media print {
+  html, html.dark, .force-light {
+    --paper: 255 255 255; --card: 255 255 255; --ink: 20 20 20; --muted: 90 90 90; --line: 210 210 210;
+    --teal: 15 95 99; --teal-soft: 217 232 229; --good: 47 125 91; --warn: 183 121 31; --bad: 166 61 47;
+  }
+  * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  body { background: white; }
+  .no-print { display: none !important; }
+  .card, .avoid-break { break-inside: avoid; }
+  .print-break { break-before: page; }
+  .print-footer {
+    display: block; position: fixed; bottom: 0; left: 0; right: 0;
+    border-top: 1px solid rgb(210 210 210); padding-top: 4px; font-size: 9px; color: rgb(90 90 90);
+  }
+}
