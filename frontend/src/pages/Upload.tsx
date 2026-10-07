@@ -1,4 +1,3 @@
-/*
 import { DragEvent, useState } from "react";
 import { Link } from "react-router-dom";
 import { Icon } from "../components/Icons";
@@ -212,4 +211,3 @@ export default function Upload() {
     </>
   );
 }
-*/

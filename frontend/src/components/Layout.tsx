@@ -1,5 +1,7 @@
 import { Link, NavLink, Outlet, useLocation } from "react-router-dom";
+import { useApi } from "../hooks/useApi";
 import { useTheme } from "../hooks/useTheme";
+import { getUploadStatus } from "../services/api";
 import FilterBar from "./FilterBar";
 import { Icon, IconName } from "./Icons";
 
@@ -50,6 +52,9 @@ function NavGroup({ title, items }: { title: string; items: NavItem[] }) {
 export default function Layout() {
   const { pathname } = useLocation();
   const showFilters = ANALYTICS.some((l) => l.to === pathname);
+  // the Upload link only appears when the API allows uploads (ALLOW_UPLOAD=true); hidden on the public site
+  const upload = useApi(getUploadStatus, []);
+  const dataItems = upload.data?.enabled ? DATA : DATA.filter((l) => l.to !== "/upload");
 
   return (
     <div className="min-h-screen lg:flex">
@@ -61,7 +66,7 @@ export default function Layout() {
         </div>
         <nav className="flex flex-1 flex-col gap-6 overflow-auto">
           <NavGroup title="Analytics" items={ANALYTICS} />
-          <NavGroup title="Data" items={DATA} />
+          <NavGroup title="Data" items={dataItems} />
         </nav>
         <div className="space-y-2">
           <Link to="/report" className="btn-primary w-full">
@@ -82,7 +87,7 @@ export default function Layout() {
             </div>
           </div>
           <nav className="flex gap-1 overflow-x-auto px-3 pb-2">
-            {[...ANALYTICS, ...DATA].map((l) => (
+            {[...ANALYTICS, ...dataItems].map((l) => (
               <NavLink key={l.to} to={l.to} end className={(s) => `${linkClass(s)} shrink-0`}>
                 <Icon name={l.icon} className="h-4 w-4" /> {l.label}
               </NavLink>
