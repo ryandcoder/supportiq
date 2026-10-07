@@ -21,6 +21,8 @@ def get_database_url() -> URL:
         host=os.getenv("POSTGRES_HOST", "localhost"),
         port=int(os.getenv("POSTGRES_PORT", "5432")),
         database=os.getenv("POSTGRES_DB", "supportiq"),
+        # cloud databases (Neon, Supabase) require SSL: set POSTGRES_SSLMODE=require
+        query={"sslmode": os.environ["POSTGRES_SSLMODE"]} if os.getenv("POSTGRES_SSLMODE") else {},
     )
 
 

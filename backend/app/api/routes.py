@@ -19,6 +19,8 @@ from .deps import get_filters
 
 router = APIRouter(prefix="/api")
 
+# copy of the report shipped with the code, used on hosts where the runtime file does not exist
+BUNDLED_REPORT = Path(__file__).resolve().parents[1] / "data_pipeline" / "data_quality_report.json"
 QUALITY_REPORT = Path(os.getenv(
     "DATA_QUALITY_PATH", Path(__file__).resolve().parents[3] / "data" / "clean" / "data_quality_report.json"))
 
@@ -74,9 +76,10 @@ def tickets(
 @router.get("/data-quality")
 def data_quality():
     """Report written by scripts/clean_data.py."""
-    if not QUALITY_REPORT.exists():
-        raise HTTPException(status_code=404, detail="Run scripts/clean_data.py first")
-    return json.loads(QUALITY_REPORT.read_text())
+    for path in (QUALITY_REPORT, BUNDLED_REPORT):
+        if path.exists():
+            return json.loads(path.read_text())
+    raise HTTPException(status_code=404, detail="Run scripts/clean_data.py first")
 
 
 # ---------------- export ----------------

@@ -1,0 +1,68 @@
+{
+  "records_raw": {
+    "agents": 20,
+    "merchants": 112,
+    "tickets": 2057
+  },
+  "records_clean": {
+    "agents": 20,
+    "merchants": 112,
+    "tickets": 2057
+  },
+  "missing_values_raw": {
+    "agents": {},
+    "merchants": {},
+    "tickets": {
+      "assigned_agent_id": 250,
+      "category_mismatch": 250,
+      "first_response_at": 250,
+      "closed_at": 250,
+      "ttfr_hours": 250,
+      "resolution_hours": 250,
+      "csat_score": 1832
+    }
+  },
+  "duplicates_removed": 0,
+  "invalid_records_flagged": 0,
+  "dropped_records": 0,
+  "date_range": [
+    "2025-01-02 01:47:43",
+    "2026-06-30 23:59:36"
+  ],
+  "status_counts": {
+    "Resolved": 1807,
+    "Open": 250
+  },
+  "change_log": [
+    {
+      "table": "tickets",
+      "action": "unassigned (no agent yet) - legitimate, kept",
+      "rows_affected": 250,
+      "detail": ""
+    },
+    {
+      "table": "tickets",
+      "action": "added derived column status (Resolved if closed_at exists, else Open)",
+      "rows_affected": 2057,
+      "detail": ""
+    },
+    {
+      "table": "tickets",
+      "action": "added derived column created_month",
+      "rows_affected": 2057,
+      "detail": ""
+    },
+    {
+      "table": "tickets",
+      "action": "open tickets: nulls in closed_at/resolution_hours/ttfr are expected",
+      "rows_affected": 250,
+      "detail": "backlog of tickets created in the last days of the dataset"
+    },
+    {
+      "table": "tickets",
+      "action": "resolved tickets without CSAT survey response (kept null, excluded from CSAT averages)",
+      "rows_affected": 1582,
+      "detail": ""
+    }
+  ]
+}

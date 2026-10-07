@@ -15,4 +15,4 @@ USER appuser
 
 EXPOSE 8000
 # 1) make sure the database holds the data  2) start the API
-CMD ["sh", "-c", "python -m app.data_pipeline.bootstrap && exec uvicorn app.main:app --host 0.0.0.0 --port 8000"]
+CMD ["sh", "-c", "python -m app.data_pipeline.bootstrap && exec uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000}"]
